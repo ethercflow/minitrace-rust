@@ -413,6 +413,7 @@ impl SpanInner {
 
     #[inline]
     fn capture_local_spans(&self, stack: Rc<RefCell<LocalSpanStack>>) -> LocalParentGuard {
+        eprintln!("capture_local_spans");
         let token = self.issue_collect_token().collect();
         let collector = LocalCollector::new(Some(token), stack);
 
@@ -421,10 +422,12 @@ impl SpanInner {
 
     #[inline]
     fn push_child_spans(&self, local_spans: Arc<LocalSpansInner>) {
+        eprintln!("push_child_spans");
         if local_spans.spans.is_empty() {
             return;
         }
 
+        eprintln!("push_child_spans call submit_spans");
         self.collect.submit_spans(
             SpanSet::SharedLocalSpans(local_spans),
             self.issue_collect_token().collect(),
@@ -445,6 +448,7 @@ impl SpanInner {
 
     #[inline]
     pub(crate) fn submit_spans(self) {
+        eprintln!("span call submit_spans");
         self.collect
             .submit_spans(SpanSet::Span(self.raw_span), self.collect_token);
     }
