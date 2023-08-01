@@ -120,6 +120,7 @@ impl GlobalCollect {
     }
 
     pub fn commit_collect(&self, collect_id: usize) {
+        eprintln!("collector commit collect");
         force_send_command(CollectCommand::CommitCollect(CommitCollect { collect_id }));
     }
 
@@ -154,6 +155,7 @@ impl GlobalCollect {
     //   `CollectTokenItem`
     // * Amend `raw_span.parent_id` of root spans in `SpanSet` to `parent_ids` of `CollectTokenItem`
     pub fn submit_spans(&self, spans: SpanSet, collect_token: CollectToken) {
+        eprintln!("collector submit spans");
         send_command(CollectCommand::SubmitSpans(SubmitSpans {
             spans,
             collect_token,

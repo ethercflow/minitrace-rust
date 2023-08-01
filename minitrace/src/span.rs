@@ -234,6 +234,7 @@ impl Span {
 
         #[cfg(feature = "enable")]
         {
+            eprintln!("set_local_parent");
             LOCAL_SPAN_STACK
                 .try_with(|s| self.attach_into_stack(s))
                 .unwrap_or_default()
@@ -389,6 +390,7 @@ impl Span {
         &self,
         stack: &Rc<RefCell<LocalSpanStack>>,
     ) -> LocalParentGuard {
+        eprintln!("attach_into_stack");
         self.inner
             .as_ref()
             .map(move |inner| inner.capture_local_spans(stack.clone()))
@@ -451,15 +453,19 @@ impl SpanInner {
 impl Drop for Span {
     fn drop(&mut self) {
         #[cfg(feature = "enable")]
+        eprintln!("Drop Span");
         if let Some(mut inner) = self.inner.take() {
+            eprintln!("Drop Span take inner");
             let collect_id = inner.collect_id.take();
             let collect = inner.collect.clone();
 
             let end_instant = Instant::now();
             inner.raw_span.end_with(end_instant);
+            eprintln!("Drop Span will submit spans");
             inner.submit_spans();
 
             if let Some(collect_id) = collect_id {
+                eprintln!("Drop Span will commit collect");
                 collect.commit_collect(collect_id);
             }
         }
