@@ -72,9 +72,11 @@ fn force_send_command(cmd: CollectCommand) {
 pub fn set_reporter(reporter: impl Reporter, config: Config) {
     #[cfg(feature = "enable")]
     {
+        eprintln!("begin at set_reporter");
         let mut global_collector = GLOBAL_COLLECTOR.lock();
         global_collector.config = config;
         global_collector.reporter = Some(Box::new(reporter));
+        eprintln!("will set reporter_ready to true");
         REPORTER_READY.store(true, Ordering::Relaxed);
     }
 }
