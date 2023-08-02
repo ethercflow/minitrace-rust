@@ -78,12 +78,12 @@ pub fn set_reporter(reporter: impl Reporter, config: Config) {
         global_collector.config = config;
         global_collector.reporter = Some(Box::new(reporter));
         eprintln!("will set reporter_ready to true");
-        REPORTER_READY.store(true, Ordering::Release);
+        REPORTER_READY.store(true, Ordering::SeqCst);
     }
 }
 
 pub(crate) fn reporter_ready() -> bool {
-    REPORTER_READY.load(Ordering::Acquire)
+    REPORTER_READY.load(Ordering::SeqCst)
 }
 
 /// Flushes all pending span records to the reporter immediately.
