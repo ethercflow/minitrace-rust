@@ -80,9 +80,16 @@ impl Span {
 
         #[cfg(feature = "enable")]
         {
-            if !reporter_ready() {
-                eprintln!("reporter not ready root return noop");
-                return Self::noop();
+            //             if !reporter_ready() {
+            //                 eprintln!("reporter not ready root return noop");
+            //                 return Self::noop();
+            //             }
+
+            loop {
+                if reporter_ready() {
+                    eprintln!("reporter not ready root");
+                    break;
+                }
             }
 
             #[cfg(not(test))]
