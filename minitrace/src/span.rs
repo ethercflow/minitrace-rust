@@ -74,12 +74,14 @@ impl Span {
     ) -> Self {
         #[cfg(not(feature = "enable"))]
         {
+            eprintln!("not enable root return noop");
             Self::noop()
         }
 
         #[cfg(feature = "enable")]
         {
             if !reporter_ready() {
+                eprintln!("reporter not ready root return noop");
                 return Self::noop();
             }
 
