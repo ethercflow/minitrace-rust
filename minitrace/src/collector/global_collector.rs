@@ -70,9 +70,10 @@ fn force_send_command(cmd: CollectCommand) {
 /// minitrace::set_reporter(ConsoleReporter, Config::default());
 /// ```
 pub fn set_reporter(reporter: impl Reporter, config: Config) {
+    eprintln!("begin at set_reporter");
     #[cfg(feature = "enable")]
     {
-        eprintln!("begin at set_reporter");
+        eprintln!("begin at enable set_reporter");
         let mut global_collector = GLOBAL_COLLECTOR.lock();
         global_collector.config = config;
         global_collector.reporter = Some(Box::new(reporter));
