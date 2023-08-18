@@ -85,12 +85,14 @@ impl Span {
             //                 return Self::noop();
             //             }
 
-            loop {
-                if reporter_ready() {
-                    eprintln!("reporter not ready root");
-                    break;
-                }
-            }
+            // loop {
+            //     if reporter_ready() {
+            //         eprintln!("reporter not ready root");
+            //         break;
+            //     }
+            // }
+
+            eprintln!("in root");
 
             #[cfg(not(test))]
             let collect = GlobalCollect;
